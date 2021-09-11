@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cos-flask-deployment
+  labels:
+    app: cos-flask
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cos-flask
+  template:
+    metadata:
+      labels:
+        app: cos-flask
+    spec:
+      containers:
+      - name: cos-flask
+        image: docker.io/jorgehernandezramirez/flask-cos:latest
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: cos-credentials
+          mountPath: "/root/.bluemix"
+          readOnly: true
+      volumes:
+      - name: cos-credentials
+        secret:
+          defaultMode: 420
+          secretName: my-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-cos-service
+spec:
+  selector:
+    app: cos-flask
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+    protocol: TCP
