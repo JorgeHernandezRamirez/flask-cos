@@ -16,7 +16,7 @@ python app.py
 ```bash
 docker login
 docker build -t docker.io/jorgehernandezramirez/flask-cos:latest .
-docker push
+docker push docker.io/jorgehernandezramirez/flask-cos:latest
 ```
 
 # Ejecución en local docker
